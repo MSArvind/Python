@@ -1,0 +1,46 @@
+import urllib.request
+import json 
+import matplotlib.pyplot as plt
+jan_value=[]
+feb_value=[]
+mar_value=[]
+apr_value=[]
+may_value=[]
+jun_val=[]
+jul_val=[]
+aug_val=[]
+sep_val=[]
+oct_val=[]
+nov_val=[]
+dec_val=[]
+for i in range(1,91):
+    address="https://developer.nrel.gov/api/pvwatts/v6.json?api_key=FjggDa043ZFaekimEthpSTgmFfHyEIL0IgCqcPzi&lat=40&lon=-105&system_capacity=4&azimuth=180&tilt="+str(i)+"&array_type=1&module_type=1&losses=10"
+    file=urllib.request.urlopen(address)
+    data=file.read()
+    dictionary=json.loads(data)
+    x=dictionary['outputs']['ac_monthly']
+    jan_value.append(x[0])
+    feb_value.append(x[1])
+    mar_value.append(x[2])
+    apr_value.append(x[3])
+    may_value.append(x[4])
+    jun_val.append(x[5])
+    jul_val.append(x[6])
+    aug_val.append(x[7])
+    sep_val.append(x[8])
+    oct_val.append(x[9])
+    nov_val.append(x[10])
+    dec_val.append(x[11])
+    y=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC']
+    plt.title('tilt angle ='+str(i))
+    plt.xlabel('Month')
+    plt.ylabel('ac_monthly')
+    plt.plot(y,x)
+    plt.show()  
+ac_annaul=[sum(jan_value),sum(feb_value),sum(mar_value),sum(apr_value),sum(may_value),sum(jun_val),sum(jul_val),sum(aug_val),sum(sep_val),sum(oct_val),sum(nov_val),sum(dec_val)]
+lat=range(30,54,2)
+plt.title('dc_annaul vs tilt angle')
+plt.xlabel('tilt angle')
+plt.ylabel('dc_annual')
+plt.plot(lat,ac_annaul)
+plt.show()
